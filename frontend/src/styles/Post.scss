@@ -1,0 +1,294 @@
+@use "./Global.scss" as g;
+
+.post {
+    background: white;
+
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    margin: 40px;
+    box-shadow: 4px 4px 4px rgba(g.$neutral-main, 0.5);
+
+    .post-content {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        border-bottom: 1px solid g.$neutral-light;
+
+        &:hover {
+            .post-actions {
+                visibility: visible;
+            }
+        }
+        .post-metadata {
+            &.editMode {
+                display: none;
+            }
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+
+            .post-title {
+                font-size: 22px;
+                color: g.$primary-main;
+            }
+
+            .post-user {
+                color: g.$secondary-main;
+            }
+        }
+
+        .post-date {
+            font-size: 12px;
+            color: g.$neutral-main;
+            float: right;
+        }
+
+        .post-message {
+            font-size: 16px;
+            white-space: pre-wrap;
+
+            &.editMode {
+                display: none;
+            }
+        }
+
+        .edit-form {
+            background: white;
+            display: none;
+            align-items: center;
+            padding: 5px;
+
+            .edit-fields {
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+                gap: 10px;
+            }
+            textarea,
+            input {
+                font-size: 16px;
+                padding: 10px;
+                border: 1px solid g.$neutral-main;
+                border-radius: 10px;
+                resize: vertical;
+                height: auto;
+            }
+            button {
+                padding: 10px;
+                height: auto;
+                width: 24px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: g.$neutral-light;
+                border: none;
+                border-radius: 20px;
+                color: white;
+                & svg {
+                    transform: translate(1px, 2px) scale(0.6);
+                }
+                &:hover {
+                    cursor: pointer;
+                    background: g.$secondary-main;
+                }
+            }
+            &.editMode {
+                display: flex;
+                gap: 10px;
+            }
+        }
+        .post-actions {
+            visibility: hidden;
+            display: flex;
+            gap: 5px;
+            color: g.$neutral-main;
+            & svg:hover {
+                cursor: pointer;
+            }
+
+            &.editMode {
+                display: none;
+            }
+        }
+    }
+
+    .comment-section {
+        background-color: g.$secondary-verylight;
+        border-radius: 0 0 10px 10px;
+        .comments {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 40px 0;
+            gap: px;
+
+            &:hover {
+                .comment-actions {
+                    visibility: visible;
+                }
+            }
+
+            .comment-content {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .comment-header {
+                padding-bottom: 10px;
+                .comment-user {
+                    font-size: 16px;
+                }
+                .comment-date {
+                    color: g.$neutral-main;
+                    font-size: 12px;
+                }
+            }
+
+            .comment-content {
+                display: block;
+                &.editMode {
+                    display: none;
+                }
+            }
+            .edit-field {
+                background: white;
+                display: none;
+                border: 1px solid g.$neutral-light;
+                border-radius: 5px;
+                align-items: center;
+                padding: 5px;
+                textarea {
+                    border: none;
+                    resize: none;
+                    flex: 1;
+                    outline: none;
+                    font-size: 16px;
+                }
+                button {
+                    padding: 10px;
+                    height: 24px;
+                    width: 24px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background: g.$neutral-light;
+                    border: none;
+                    border-radius: 100%;
+                    color: white;
+                    & svg {
+                        transform: translate(1px, 2px) scale(0.6);
+                    }
+                    &:hover {
+                        cursor: pointer;
+                        background: g.$secondary-main;
+                    }
+                }
+                &.editMode {
+                    display: flex;
+                }
+            }
+
+            .comment-actions {
+                visibility: hidden;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                color: g.$neutral-main;
+                padding-right: 10px;
+                & svg:hover {
+                    cursor: pointer;
+                }
+
+                &.editMode {
+                    display: none;
+                }
+            }
+        }
+
+        .newcomment {
+            background: white;
+            margin: 20px 40px 10px;
+            display: flex;
+            border: 1px solid g.$neutral-light;
+            border-radius: 5px;
+            padding: 5px;
+            align-items: center;
+            textarea {
+                border: none;
+                resize: none;
+                flex: 1;
+                outline: none;
+            }
+            button {
+                padding: 10px;
+                height: 24px;
+                width: 24px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: g.$neutral-light;
+                border: none;
+                border-radius: 100%;
+                color: white;
+                & svg {
+                    transform: translate(1px, 2px);
+                }
+                &:hover {
+                    cursor: pointer;
+                    background: g.$secondary-main;
+                }
+            }
+        }
+    }
+}
+
+.newpost {
+    background: g.$secondary-light;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    margin: 40px;
+    box-shadow: 4px 4px 4px rgba(g.$neutral-main, 0.8);
+    gap: 10px;
+
+    span {
+        color: white;
+        display: flex;
+        gap: 5px;
+    }
+
+    .newpost-input {
+        font-size: 16px;
+        padding: 10px;
+        border: 1px solid g.$neutral-main;
+        border-radius: 10px;
+        &.message {
+            min-height: 60px;
+        }
+    }
+    textarea {
+        resize: vertical;
+        max-height: 200px;
+    }
+
+    .newpost-submit {
+        font-size: 14px;
+        width: 200px;
+        align-self: flex-end;
+        padding: 10px;
+        background: g.$secondary-main;
+        border: none;
+        border-radius: 10px;
+        color: white;
+
+        &:hover {
+            cursor: pointer;
+            background: g.$secondary-dark;
+        }
+    }
+}

@@ -1,0 +1,33 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+//colors
+$primary-dark: #1c1447;
+$primary-main: #40328d;
+$primary-light: #7e6fd1;
+$primary-verylight: #d7d4e7;
+
+$secondary-dark: rgb(47, 92, 151);
+$secondary-main: rgb(64, 106, 197);
+$secondary-light: rgb(110, 112, 250);
+$secondary-verylight: rgb(226, 233, 248);
+
+$neutral-main: #767676;
+$neutral-light: #aaa;
+
+body {
+    background: $primary-verylight;
+}
+
+.page-body {
+    max-width: 800px;
+    margin: 0 auto;
+
+    & ::placeholder {
+        color: $neutral-light;
+    }
+}
