@@ -5,7 +5,9 @@
     display: flex;
     color: white;
     justify-content: space-between;
-    padding: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 
     .left {
         display: flex;
@@ -15,8 +17,14 @@
     .right {
         display: flex;
 
-        > div {
+        > a {
             padding: 10px;
+            text-decoration: none;
+            color: white;
+            border-bottom: 2px solid transparent;
+            &:hover {
+                border-bottom: 2px solid white;
+            }
         }
     }
 }

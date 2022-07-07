@@ -19,6 +19,9 @@ $secondary-verylight: rgb(226, 233, 248);
 $neutral-main: #767676;
 $neutral-light: #aaa;
 
+$warning: rgb(184, 38, 38);
+$success: rgb(38, 184, 70);
+
 body {
     background: $primary-verylight;
 }
@@ -29,5 +32,12 @@ body {
 
     & ::placeholder {
         color: $neutral-light;
+    }
+}
+
+a {
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
     }
 }

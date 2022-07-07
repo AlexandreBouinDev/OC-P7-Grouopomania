@@ -11,16 +11,17 @@ export default {
         postId: Number,
     },
     methods: {
-        submitComment(event) {
+        async submitComment(event) {
             event.preventDefault();
             const data = new FormData(event.target);
             const commentReq = {
                 content: data.get("content"),
                 postId: this.postId,
             };
-            controller.addComment(commentReq);
+            await controller.addComment(commentReq);
             this.$emit("new-comment");
             this.$forceUpdate();
+            event.target.content.value = "";
         },
     },
 };

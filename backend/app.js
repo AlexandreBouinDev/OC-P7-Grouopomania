@@ -1,7 +1,13 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
-app.use(express.json())
+const cors = require("cors")
+const morgan = require("morgan")
+app.use(bodyParser.json());
+app.use(express.json({ limit: "8000kb" }))
+app.use(express.urlencoded({ extended: true }));
+app.use(cors())
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
@@ -9,7 +15,7 @@ app.use((req, res, next) => {
     next();
 });
 app.use('/images', express.static(path.join(__dirname, 'images')));
-
+app.use(morgan('dev'))
 
 const router = require("./routes/routes.js")
 

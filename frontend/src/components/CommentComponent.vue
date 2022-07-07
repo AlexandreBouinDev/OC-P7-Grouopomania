@@ -12,6 +12,7 @@ export default {
         return {
             xUsers: [],
             editMode: "",
+            localUser: localStorage.getItem("userId"),
         };
     },
     props: {
@@ -60,14 +61,20 @@ export default {
 </script>
 
 <template>
-    <div class="comment-actions" :class="editMode">
+    <div
+        class="comment-actions"
+        :class="editMode"
+        v-if="this.localUser == comment.userId"
+    >
         <editIcon v-on:click="editComment()" /><deleteIcon
             v-on:click="deleteComment(comment.id)"
         />
     </div>
     <div class="comment-content">
         <div class="comment-header">
-            <h3 class="comment-user">{{ getUserName(comment.userId) }}</h3>
+            <a :href="/profile/ + comment.userId">
+                <h3 class="comment-user">{{ getUserName(comment.userId) }}</h3>
+            </a>
             <p class="comment-date">
                 {{ formatDate(comment.creationDate) }}
             </p>

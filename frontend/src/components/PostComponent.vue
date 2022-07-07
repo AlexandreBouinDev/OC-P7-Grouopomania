@@ -13,6 +13,7 @@ export default {
         return {
             xUsers: [],
             editMode: "",
+            localUser: localStorage.getItem("userId"),
         };
     },
     props: {
@@ -68,7 +69,11 @@ export default {
         <div class="post-metadata" :class="editMode">
             <div class="post-header">
                 <h2 class="post-title">{{ this.post.title }}</h2>
-                <h3 class="post-user">{{ getUserName(this.post.userId) }}</h3>
+                <a :href="/profile/ + this.post.userId">
+                    <h3 class="post-user">
+                        {{ getUserName(this.post.userId) }}
+                    </h3>
+                </a>
             </div>
             <p class="post-date">{{ formatDate(this.post.creationDate) }}</p>
         </div>
@@ -76,7 +81,6 @@ export default {
         <form
             :class="editMode"
             class="edit-form"
-            type="submit"
             @submit="(e) => sendEditedPost(e)"
         >
             <div class="edit-fields">
@@ -91,7 +95,11 @@ export default {
                 <send-icon />
             </button>
         </form>
-        <div class="post-actions" :class="editMode">
+        <div
+            class="post-actions"
+            :class="editMode"
+            v-if="this.localUser == this.post.userId"
+        >
             <edit-icon v-on:click="editPost()" /><deleteIcon
                 v-on:click="deletePost(post.id)"
             />

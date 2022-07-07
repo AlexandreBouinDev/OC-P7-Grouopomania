@@ -15,11 +15,13 @@ export default {
         return {
             xComments: [],
             xUsers: [],
+            length: 0,
         };
     },
     async mounted() {
         this.xComments = await controller.getComments(this.postId);
         this.xUsers = await controller.getUsers();
+        this.length = await this.xComments.length;
     },
     methods: {
         getUserName(idUser) {
@@ -35,10 +37,10 @@ export default {
             let jsDate = sqlDate.slice(0, 10);
             return jsDate;
         },
-
         async updateList() {
-            console.log("update comments");
             this.xComments = await controller.getComments(this.postId);
+            console.log(this.xComments)
+            this.$emit("refresh-post");
         },
     },
 };

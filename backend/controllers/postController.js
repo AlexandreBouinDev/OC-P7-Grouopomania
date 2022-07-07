@@ -11,6 +11,18 @@ exports.getPosts = (req, res, next) => {
         })
 }
 
+exports.getUserPosts = (req, res, next) => {
+    let userId = req.params.id
+    let postManager = new PostManager
+    postManager.getUserPosts(userId)
+        .then(response => {
+            res.status(200).json(response)
+        })
+        .catch(error => {
+            res.status(500).json(error)
+        })
+}
+
 exports.addPost = (req, res, next) => {
     let postManager = new PostManager
     postManager.addPost(req)

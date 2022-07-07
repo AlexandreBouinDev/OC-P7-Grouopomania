@@ -1,0 +1,176 @@
+@use "./Global.scss" as g;
+
+.page-body {
+    .profile-block {
+        margin: 20px;
+        background-color: g.$secondary-light;
+        padding: 20px;
+        border-radius: 20px;
+        box-shadow: 4px 4px 4px rgba(g.$neutral-main, 0.5);
+        display: flex;
+        justify-content: space-evenly;
+
+        .profile-image {
+            max-height: 200px;
+            max-width: 200px;
+            border-radius: 100%;
+            overflow: hidden;
+            position: relative;
+
+            img {
+                max-height: 100%;
+            }
+            input {
+                display: none;
+            }
+
+            .edit-layer {
+                pointer-events: none;
+                opacity: 0;
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: white;
+                & svg {
+                    width: 50px;
+                    height: 50px;
+                }
+            }
+        }
+
+        .input-label:hover > img {
+            filter: brightness(0.5);
+            cursor: pointer;
+        }
+
+        .input-label:hover {
+            ~ .edit-layer {
+                opacity: 1;
+            }
+        }
+
+        .profile-data {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            justify-content: space-between;
+            margin: 0 20px;
+        }
+
+        .profile-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            flex: 1;
+
+            &.editMode {
+                display: none;
+            }
+
+            h1 {
+                color: g.$primary-verylight;
+            }
+
+            h2 {
+                color: g.$primary-main;
+            }
+        }
+
+        .edit-form {
+            display: none;
+
+            &.editMode {
+                display: flex;
+                flex: 1;
+                flex-direction: column;
+                justify-content: space-between;
+
+                .form-names {
+                    display: flex;
+                    justify-content: space-between;
+                }
+
+                input {
+                    font-size: 16px;
+                    padding: 10px;
+                    border: 1px solid g.$neutral-main;
+                    border-radius: 10px;
+                    height: auto;
+                }
+            }
+        }
+
+        .profile-actions {
+            display: flex;
+            justify-content: space-between;
+            &.profil-button {
+                flex: 1;
+                gap: 20px;
+            }
+        }
+
+        .profile-button {
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            border: none;
+            font-size: 16px;
+
+            &:hover {
+                cursor: pointer;
+                filter: brightness(1.2);
+            }
+
+            &.edit {
+                background: g.$primary-verylight;
+                &.switch {
+                    align-self: flex-end;
+                    max-width: 200px;
+                    &.editMode {
+                        display: none;
+                    }
+                }
+            }
+
+            &.confirm {
+                background: g.$success;
+                color: white;
+            }
+
+            &.delete {
+                background: g.$warning;
+                color: white;
+                display: none;
+
+                &.editMode {
+                    display: flex;
+                }
+            }
+        }
+    }
+    .history {
+        color: g.$primary-dark;
+        margin-top: 40px;
+    }
+    .post {
+        margin: 20px;
+    }
+}
+
+@media screen and(max-width : 780px ) {
+    input,
+    select {
+        font-size: small !important;
+    }
+    .profile-button {
+        font-size: small !important;
+    }
+    .profile-image {
+    }
+}

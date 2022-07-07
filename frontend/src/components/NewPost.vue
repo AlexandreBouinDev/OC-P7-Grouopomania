@@ -7,14 +7,17 @@ let controller = new Controller();
 export default {
     components: { postIcon },
     methods: {
-        submitPost(event) {
+        async submitPost(event) {
             event.preventDefault();
             const data = new FormData(event.target);
             const postReq = {
                 title: data.get("title"),
                 content: data.get("content"),
             };
-            controller.addPost(postReq);
+            await controller.addPost(postReq);
+            this.$emit("new-post");
+            event.target.title.value = "";
+            event.target.content.value = "";
         },
     },
 };

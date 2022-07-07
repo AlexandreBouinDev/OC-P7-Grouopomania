@@ -1,20 +1,27 @@
 <script>
-import NavBar from "../components/NavBar";
+import NavBar from "../components/NavBar.vue";
 import PostsList from "../components/PostsList";
-import NewPost from "@/components/NewPost";
 export default {
     components: {
         NavBar,
-        NewPost,
         PostsList,
+    },
+    data() {
+        return {
+            shouldUpdate: false,
+        };
+    },
+    methods: {
+        updateList() {
+            console.log("shouldUpdate à true");
+            this.shouldUpdate = true;
+        },
     },
 };
 </script>
-
 <template id="HomePage">
     <NavBar />
     <div class="page-body">
-        <NewPost />
         <PostsList />
     </div>
 </template>
