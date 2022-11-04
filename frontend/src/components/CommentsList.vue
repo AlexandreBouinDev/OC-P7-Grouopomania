@@ -39,7 +39,7 @@ export default {
         },
         async updateList() {
             this.xComments = await controller.getComments(this.postId);
-            console.log(this.xComments)
+            console.log(this.xComments);
             this.$emit("refresh-post");
         },
     },
@@ -53,8 +53,10 @@ export default {
         class="comments"
         id="CommentsList"
     >
-        <CommentComponent v-bind:comment="comment" />
+        <CommentComponent
+            v-bind:comment="comment"
+            @refresh-comment="updateList"
+        />
     </div>
     <NewComment v-bind:postId="postId" @new-comment="updateList" />
-    <button :onclick="updateList">REFRESH</button>
 </template>

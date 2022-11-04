@@ -9,6 +9,11 @@ export default class Controller {
         return posts
     }
 
+    async getUserLikes(userId) {
+        let likes = await model.getUserLikes(userId)
+        return likes
+    }
+
     async getUserPosts(userId) {
         let posts = await model.getUserPosts(userId)
         return posts
@@ -53,20 +58,29 @@ export default class Controller {
 
 
     //POSTS
-    async addPost(postReq) {
+    async addPost(postReq, img) {
         let userId = localStorage.getItem("userId")
-        // postReq = { ...postReq, userId, img: null }
         postReq.userId = userId;
-        postReq.img = null
-        await model.addPost(postReq)
+        const formData = new FormData()
+        formData.append("postReq", JSON.stringify(postReq))
+        formData.append("image", img)
+        await model.addPost(formData)
     }
     editPost(postReq) {
-        postReq = { ...postReq, userId: 3 }
-        model.editPost(postReq)
+        postReq = { ...postReq }
+        model.editPost(postReq).then(data => {
+            return data
+        })
     }
     deletePost(postId) {
         model.deletePost(postId)
     }
+
+    likePost(data) {
+        model.likePost(data)
+    }
+
+
 
 
     // COMMENTS

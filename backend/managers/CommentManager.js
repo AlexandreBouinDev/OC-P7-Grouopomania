@@ -4,7 +4,7 @@ class CommentManager {
     async getPostComments(postId) {
         return new Promise(
             (resolve, reject) => {
-                SQLConnect.query(`SELECT * FROM comment WHERE postId = ${postId}`, function (err, data, fields) {
+                SQLConnect.query(`SELECT * FROM comment WHERE postId = ?`, postId, function (err, data, fields) {
                     if (err) {
                         reject(err)
                     } else {
@@ -19,7 +19,7 @@ class CommentManager {
         return new Promise(
             (resolve, reject) => {
 
-                SQLConnect.query(`INSERT INTO comment (content, userId, postId, creationDate) VALUES ("${comment.content}", ${comment.userId},${comment.postId} , now())`
+                SQLConnect.query(`INSERT INTO comment (content, userId, postId, creationDate) VALUES (?, ?, ? , now())`, [comment.content, comment.userId, comment.postId]
                     , function (err, data, fields) {
                         if (err) {
                             reject(err)
@@ -36,7 +36,7 @@ class CommentManager {
         return new Promise(
             (resolve, reject) => {
 
-                SQLConnect.query(`UPDATE comment SET content = "${comment.content}", creationDate = now() WHERE id = ${comment.id} `
+                SQLConnect.query(`UPDATE comment SET content = ?, creationDate = now() WHERE id = ?`, [comment.content, comment.id]
                     , function (err, data, fields) {
                         if (err) {
                             reject(err)

@@ -1,11 +1,12 @@
 <script>
 import Controller from "../middleware/controller.js";
 import postIcon from "vue-material-design-icons/Post.vue";
+import addImgIcon from "vue-material-design-icons/ImagePlus.vue";
 
 let controller = new Controller();
 
 export default {
-    components: { postIcon },
+    components: { postIcon, addImgIcon },
     methods: {
         async submitPost(event) {
             event.preventDefault();
@@ -14,10 +15,11 @@ export default {
                 title: data.get("title"),
                 content: data.get("content"),
             };
-            await controller.addPost(postReq);
+            const img = data.get("file-input");
+            await controller.addPost(postReq, img);
             this.$emit("new-post");
-            event.target.title.value = "";
-            event.target.content.value = "";
+            // event.target.title.value = "";
+            // event.target.content.value = "";
         },
     },
 };
@@ -41,6 +43,19 @@ export default {
             name="content"
             class="newpost-input message"
         ></textarea>
-        <button type="submit" class="newpost-submit">Envoyer</button>
+        <div class="newpost-actions">
+            <input
+                type="file"
+                class="uploadPostImage input"
+                id="file-input"
+                accept="image/*"
+                v-on:change="(e) => uploadPostImage(e)"
+                name="file-input"
+            />
+            <label for="file-input" class="uploadPostImage">
+                <addImgIcon :size="20" /> Ajouter une image</label
+            >
+            <button type="submit" class="newpost-submit">Envoyer</button>
+        </div>
     </form>
 </template>

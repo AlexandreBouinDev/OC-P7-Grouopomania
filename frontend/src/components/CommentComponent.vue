@@ -1,15 +1,16 @@
 <script>
-import Controller from "../middleware/controller.js";
-let controller = new Controller();
-
 import editIcon from "vue-material-design-icons/PencilCircleOutline.vue";
 import deleteIcon from "vue-material-design-icons/DeleteCircleOutline.vue";
 import sendIcon from "vue-material-design-icons/Send.vue";
+
+import Controller from "../middleware/controller.js";
+let controller = new Controller();
 
 export default {
     components: { editIcon, deleteIcon, sendIcon },
     data() {
         return {
+            path: process.env.VUE_APP_BACKPATH,
             xUsers: [],
             editMode: "",
             localUser: localStorage.getItem("userId"),
@@ -27,12 +28,14 @@ export default {
         this.xUsers = await controller.getUsers();
     },
     methods: {
-        getUserName(idUser) {
+        getUserData(idUser) {
             let user = this.xUsers.find((user) => user.id === idUser);
             let name = "";
+            let avatar = "";
             if (user) {
                 name = `${user.firstname} ${user.lastname}`;
-                return name;
+                avatar = user.avatar;
+                return { name, avatar };
             }
             return "Anonymous";
         },
@@ -45,6 +48,11 @@ export default {
         },
         deleteComment(id) {
             controller.deleteComment(id);
+            this.$emit("refresh-comment");
+        },
+        setAvatarPath(avatar) {
+            let src = `${this.path}/images/${avatar ?? "undefined.png"} `;
+            return src;
         },
         sendEditedComment(e) {
             e.preventDefault();
@@ -54,6 +62,7 @@ export default {
                 id: this.comment.id,
             };
             controller.editComment(commentReq);
+            this.$emit("refresh-comment");
             this.editMode = "";
         },
     },
@@ -73,13 +82,22 @@ export default {
     <div class="comment-content">
         <div class="comment-header">
             <a :href="/profile/ + comment.userId">
-                <h3 class="comment-user">{{ getUserName(comment.userId) }}</h3>
-            </a>
-            <p class="comment-date">
-                {{ formatDate(comment.creationDate) }}
-            </p>
+                <img
+                    :src="setAvatarPath(getUserData(comment.userId).avatar)"
+                    className="comment-avatar"
+            /></a>
+            <div>
+                <a :href="/profile/ + comment.userId">
+                    <h3 class="comment-user">
+                        {{ getUserData(comment.userId).name }}
+                    </h3>
+                </a>
+                <p class="comment-date">
+                    {{ formatDate(comment.creationDate) }}
+                </p>
+            </div>
         </div>
-        <p :class="editMode" class="comment-content">{{ comment.content }}</p>
+        <p :class="editMode" class="comment-message">{{ comment.content }}</p>
         <form
             :class="editMode"
             class="edit-field"

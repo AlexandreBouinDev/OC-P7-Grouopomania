@@ -11,9 +11,9 @@ const commentCtrl = require("../controllers/commentController")
 
 //ROUTES
 //users
-router.get("/api/users", multer, userCtrl.getUsers)
-router.get("/api/users/:id", multer, userCtrl.getUserData)
-router.post('/api/users/signup', multer, userCtrl.signup)
+router.get("/api/users", userCtrl.getUsers)
+router.get("/api/users/:id", userCtrl.getUserData)
+router.post('/api/users/signup', userCtrl.signup)
 router.post('/api/users/login', userCtrl.login)
 router.put('/api/users/edit', auth, userCtrl.editUser)
 router.post('/api/users/updateProfilePicture/:id', auth, multer, userCtrl.updateProfilePicture)
@@ -21,10 +21,12 @@ router.delete('/api/users/delete', auth, userCtrl.deleteUser)
 
 //posts
 router.get("/api/posts", postCtrl.getPosts)
-router.post("/api/posts", auth, postCtrl.addPost)
+router.post("/api/posts", auth, multer, postCtrl.addPost)
 router.put("/api/posts", auth, postCtrl.editPost)
 router.delete("/api/posts", auth, postCtrl.deletePost)
 router.get("/api/posts/:id", postCtrl.getUserPosts)
+router.post("/api/posts/like", auth, postCtrl.likePost)
+router.get("/api/posts/like/:id", postCtrl.getUserLikes)
 
 //comments
 router.get("/api/comments/:id", commentCtrl.getComments)

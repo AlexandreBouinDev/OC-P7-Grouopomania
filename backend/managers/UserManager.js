@@ -18,7 +18,7 @@ class UserManager {
     async getUserByEmail(email) {
         return new Promise(
             (resolve, reject) => {
-                SQLConnect.query(`SELECT * FROM user WHERE email = "${email}" LIMIT 1`, function (err, data, fields) {
+                SQLConnect.query(`SELECT * FROM user WHERE email = ? LIMIT 1`, email, function (err, data, fields) {
                     if (err) {
                         reject(err)
                     } else {
@@ -32,7 +32,7 @@ class UserManager {
     async getUserData(id) {
         return new Promise(
             (resolve, reject) => {
-                SQLConnect.query(`SELECT * FROM user WHERE id = ${id}`, function (err, data, fields) {
+                SQLConnect.query(`SELECT * FROM user WHERE id = ?`, id, function (err, data, fields) {
                     if (err) {
                         reject(err)
                     } else {
@@ -46,7 +46,7 @@ class UserManager {
     async signup(newuser) {
         return new Promise(
             (resolve, reject) => {
-                SQLConnect.query(`INSERT INTO user (email, password, firstname, lastname, position, isAdmin) VALUES ("${newuser.email}", "${newuser.password}", "${newuser.firstname}", "${newuser.lastname}" , "${newuser.position}", 0)`
+                SQLConnect.query(`INSERT INTO user (email, password, firstname, lastname, position, isAdmin) VALUES ( ? , ? , ? , ? , ? , 0)`, [newuser.email, newuser.password, newuser.firstname, newuser.lastname, newuser.position]
                     , function (err, data, fields) {
                         if (err) {
                             reject(err)
@@ -59,9 +59,10 @@ class UserManager {
     }
 
     async editUser(user) {
+        console.log(user)
         return new Promise(
             (resolve, reject) => {
-                SQLConnect.query(`UPDATE user SET firstname = "${user.firstname}", lastname = "${user.lastname}", position = "${user.position}", email = "${user.email}" WHERE id = ${user.userId}`
+                SQLConnect.query(`UPDATE user SET firstname = ?, lastname = ?, position = ?, email = ? WHERE id = ?`, [user.firstname, user.lastname, user.position, user.email, user.userId]
                     , function (err, data, fields) {
                         if (err) {
                             reject(err)
@@ -73,10 +74,10 @@ class UserManager {
         )
     }
 
-    async updateProfilePicture(user) {
+    async updateProfilePicture(imageUrl, userId) {
         return new Promise(
             (resolve, reject) => {
-                SQLConnect.query(`UPDATE user SET firstname = "${user.firstname}", lastname = "${user.lastname}", position = "${user.position}", email = "${user.email}" WHERE id = ${user.userId}`
+                SQLConnect.query(`UPDATE user SET avatar = ? WHERE id = ?`, [imageUrl, userId]
                     , function (err, data, fields) {
                         if (err) {
                             reject(err)

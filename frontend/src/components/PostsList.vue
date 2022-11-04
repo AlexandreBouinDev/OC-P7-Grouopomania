@@ -15,6 +15,7 @@ export default {
     data() {
         return {
             xPosts: [],
+            xLikes: [],
         };
     },
     async mounted() {
@@ -23,11 +24,23 @@ export default {
 
     methods: {
         updateList() {
-            console.log("je reload la liste");
-            this.loadPost();
+            this.reloadList();
+        },
+        async reloadList() {
+            this.xPosts = await controller.getPosts();
+            this.forceUpdate();
         },
         async loadPost() {
+            let userId = localStorage.getItem("userId");
             this.xPosts = await controller.getPosts();
+            this.xLikes = await controller.getUserLikes(userId);
+            if (this.xPosts.length != 0 && this.xLikes.length != 0) {
+                this.xPosts.forEach((post) => {
+                    if (this.xLikes.find((like) => like.postId === post.id)) {
+                        post.isLiked = true;
+                    }
+                });
+            }
         },
     },
 };
@@ -36,7 +49,7 @@ export default {
 <template>
     <NewPost @new-post="updateList()" />
     <div v-for="post in xPosts" :key="post.id" class="post" id="PostsList">
-        <PostComponent v-bind:post="post" />
+        <PostComponent v-bind:post="post" @refresh-post="updateList" />
         <div class="comment-section">
             <CommentsList v-bind:postId="post.id" @refresh-post="updateList" />
         </div>

@@ -1,166 +1,187 @@
 @use "./Global.scss" as g;
 
-.page-body {
-    .profile-block {
-        margin: 20px;
-        background-color: g.$secondary-light;
-        padding: 20px;
-        border-radius: 20px;
-        box-shadow: 4px 4px 4px rgba(g.$neutral-main, 0.5);
+.profile-block {
+    margin: 20px;
+    background-color: g.$secondary-light;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 4px 4px 4px rgba(g.$neutral-main, 0.5);
+    display: flex;
+    justify-content: space-evenly;
+
+    .profile-image {
+        height: 200px;
+        width: 200px;
+        border-radius: 100%;
+        overflow: hidden;
+        position: relative;
+
+        img {
+            max-height: 100%;
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
+        input {
+            display: none;
+        }
+
+        .edit-layer {
+            pointer-events: none;
+            opacity: 0;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            & svg {
+                width: 50px;
+                height: 50px;
+            }
+        }
+    }
+
+    .input-label:hover > img {
+        filter: brightness(0.5);
+        cursor: pointer;
+    }
+
+    .input-label:hover {
+        ~ .edit-layer {
+            opacity: 1;
+        }
+    }
+
+    .profile-data {
         display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: space-between;
+        margin: 0 20px;
+    }
+    .profile-content {
+        display: flex;
+        flex-direction: column;
         justify-content: space-evenly;
+        flex: 1;
 
-        .profile-image {
-            max-height: 200px;
-            max-width: 200px;
-            border-radius: 100%;
-            overflow: hidden;
-            position: relative;
-
-            img {
-                max-height: 100%;
-            }
-            input {
-                display: none;
-            }
-
-            .edit-layer {
-                pointer-events: none;
-                opacity: 0;
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                color: white;
-                & svg {
-                    width: 50px;
-                    height: 50px;
-                }
-            }
+        &.editMode {
+            display: none;
         }
 
-        .input-label:hover > img {
-            filter: brightness(0.5);
-            cursor: pointer;
+        h1 {
+            color: g.$primary-verylight;
         }
 
-        .input-label:hover {
-            ~ .edit-layer {
-                opacity: 1;
-            }
+        h2 {
+            color: g.$primary-main;
         }
 
-        .profile-data {
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-            justify-content: space-between;
-            margin: 0 20px;
-        }
-
-        .profile-content {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-evenly;
-            flex: 1;
-
-            &.editMode {
-                display: none;
-            }
-
-            h1 {
-                color: g.$primary-verylight;
-            }
-
-            h2 {
+        .profile-contact a {
+            text-decoration: none;
+            color: black;
+            &:hover {
                 color: g.$primary-main;
             }
         }
+    }
 
-        .edit-form {
-            display: none;
+    .edit-form {
+        display: none;
+        flex: 1;
+        flex-direction: column;
+        justify-content: space-between;
 
-            &.editMode {
-                display: flex;
-                flex: 1;
-                flex-direction: column;
-                justify-content: space-between;
-
-                .form-names {
-                    display: flex;
-                    justify-content: space-between;
-                }
-
-                input {
-                    font-size: 16px;
-                    padding: 10px;
-                    border: 1px solid g.$neutral-main;
-                    border-radius: 10px;
-                    height: auto;
-                }
-            }
+        &.editMode {
+            display: flex;
         }
 
-        .profile-actions {
+        .form-names {
             display: flex;
             justify-content: space-between;
-            &.profil-button {
-                flex: 1;
-                gap: 20px;
-            }
         }
 
-        .profile-button {
-            padding: 5px 10px;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            border: none;
+        input {
             font-size: 16px;
+            padding: 10px;
+            border: 1px solid g.$neutral-main;
+            border-radius: 10px;
+            height: auto;
+        }
+    }
 
-            &:hover {
-                cursor: pointer;
-                filter: brightness(1.2);
-            }
+    .profile-actions {
+        display: flex;
+        justify-content: space-between;
+        &.profil-button {
+            flex: 1;
+            gap: 20px;
+        }
+    }
 
-            &.edit {
-                background: g.$primary-verylight;
-                &.switch {
-                    align-self: flex-end;
-                    max-width: 200px;
-                    &.editMode {
-                        display: none;
-                    }
-                }
-            }
+    .profile-button {
+        padding: 5px 10px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        border: none;
+        font-size: 16px;
 
-            &.confirm {
-                background: g.$success;
-                color: white;
-            }
+        &:hover {
+            cursor: pointer;
+            filter: brightness(1.2);
+        }
 
-            &.delete {
-                background: g.$warning;
-                color: white;
-                display: none;
-
+        &.edit {
+            background: g.$primary-verylight;
+            &.switch {
+                align-self: flex-end;
+                max-width: 200px;
                 &.editMode {
-                    display: flex;
+                    display: none;
                 }
             }
         }
+
+        &.confirm {
+            background: g.$success;
+            color: white;
+        }
+
+        &.delete {
+            background: g.$warning;
+            color: white;
+            display: flex;
+        }
     }
-    .history {
-        color: g.$primary-dark;
-        margin-top: 40px;
+
+    @media screen and(max-width : 510px) {
+        flex-direction: column;
+        align-items: center;
+
+        .profile-content {
+            gap: 20px;
+        }
+
+        .profile-button,
+        .edit,
+        .switch {
+            align-self: center !important;
+            margin-top: 20px;
+        }
     }
-    .post {
-        margin: 20px;
-    }
+}
+
+.history {
+    color: g.$primary-dark;
+    margin-top: 40px;
+}
+.post {
+    margin: 20px;
 }
 
 @media screen and(max-width : 780px ) {
@@ -170,7 +191,5 @@
     }
     .profile-button {
         font-size: small !important;
-    }
-    .profile-image {
     }
 }

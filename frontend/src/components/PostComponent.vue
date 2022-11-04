@@ -2,15 +2,18 @@
 import Controller from "../middleware/controller.js";
 let controller = new Controller();
 
+import LikeButton from "./LikeButton";
+
 import editIcon from "vue-material-design-icons/PencilCircleOutline.vue";
 import deleteIcon from "vue-material-design-icons/DeleteCircleOutline.vue";
 import sendIcon from "vue-material-design-icons/Send.vue";
 
 export default {
-    components: { editIcon, deleteIcon, sendIcon },
+    components: { LikeButton, editIcon, deleteIcon, sendIcon },
 
     data() {
         return {
+            path: process.env.VUE_APP_BACKPATH,
             xUsers: [],
             editMode: "",
             localUser: localStorage.getItem("userId"),
@@ -24,18 +27,21 @@ export default {
             creationDate: String,
             id: Number,
             img: String,
+            isLiked: Boolean,
         },
     },
     async mounted() {
         this.xUsers = await controller.getUsers();
     },
     methods: {
-        getUserName(idUser) {
+        getUserData(idUser) {
             let user = this.xUsers.find((user) => user.id === idUser);
             let name = "";
+            let avatar = "";
             if (user) {
                 name = `${user.firstname} ${user.lastname}`;
-                return name;
+                avatar = user.avatar;
+                return { name, avatar };
             }
             return "Anonymous";
         },
@@ -48,6 +54,7 @@ export default {
         },
         deletePost(id) {
             controller.deletePost(id);
+            this.$emit("refresh-post");
         },
         sendEditedPost(e) {
             e.preventDefault();
@@ -56,9 +63,22 @@ export default {
                 title: data.get("title"),
                 content: data.get("content"),
                 id: this.post.id,
+                userId: this.userId,
             };
             controller.editPost(postReq);
             this.editMode = "";
+            this.$emit("refresh-post");
+        },
+        setAvatarPath(avatar) {
+            let src = `${this.path}/images/${avatar ?? "undefined.png"} `;
+            return src;
+        },
+        setImagePath(image) {
+            let src = `${this.path}/images/${image}`;
+            return src;
+        },
+        refreshPost() {
+            this.$emit("refresh-post");
         },
     },
 };
@@ -67,15 +87,33 @@ export default {
 <template>
     <div class="post-content">
         <div class="post-metadata" :class="editMode">
+            <div class="post-title">
+                <h2>{{ this.post.title }}</h2>
+                <div
+                    class="post-actions"
+                    :class="editMode"
+                    v-if="this.localUser == this.post.userId"
+                >
+                    <edit-icon v-on:click="editPost()" /><deleteIcon
+                        v-on:click="deletePost(post.id)"
+                    />
+                </div>
+            </div>
             <div class="post-header">
-                <h2 class="post-title">{{ this.post.title }}</h2>
                 <a :href="/profile/ + this.post.userId">
                     <h3 class="post-user">
-                        {{ getUserName(this.post.userId) }}
+                        {{ getUserData(this.post.userId).name }}
                     </h3>
                 </a>
+                <p class="post-date">
+                    {{ formatDate(this.post.creationDate) }}
+                </p>
             </div>
-            <p class="post-date">{{ formatDate(this.post.creationDate) }}</p>
+            <a :href="/profile/ + this.post.userId">
+                <img
+                    :src="setAvatarPath(getUserData(this.post.userId).avatar)"
+                    className="post-avatar"
+            /></a>
         </div>
         <p class="post-message" :class="editMode">{{ this.post.content }}</p>
         <form
@@ -95,14 +133,16 @@ export default {
                 <send-icon />
             </button>
         </form>
-        <div
-            class="post-actions"
-            :class="editMode"
-            v-if="this.localUser == this.post.userId"
-        >
-            <edit-icon v-on:click="editPost()" /><deleteIcon
-                v-on:click="deletePost(post.id)"
-            />
-        </div>
+        <img
+            v-if="this.post.img"
+            :src="setImagePath(this.post.img)"
+            className="post-image"
+        />
     </div>
+    <LikeButton
+        v-bind:userId="this.localUser"
+        v-bind:postId="this.post.id"
+        v-bind:isLiked="this.post.isLiked"
+        @new-like="refreshPost"
+    />
 </template>

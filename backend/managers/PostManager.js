@@ -19,7 +19,7 @@ class PostManager {
     async getUserPosts(userId) {
         return new Promise(
             (resolve, reject) => {
-                SQLConnect.query(`SELECT * FROM post WHERE userId = ${userId} ORDER BY id DESC `, function (err, data, fields) {
+                SQLConnect.query(`SELECT * FROM post WHERE userId = ? ORDER BY id DESC `, userId, function (err, data, fields) {
                     if (err) {
                         reject(err)
                     } else {
@@ -32,10 +32,15 @@ class PostManager {
 
 
     async addPost(req) {
-        let post = req.body
+        let data = req.body
+        let post = JSON.parse(data.postReq)
+        let imgUrl = null
+        if (req.file) {
+            imgUrl = req.file.filename
+        }
         return new Promise(
             (resolve, reject) => {
-                SQLConnect.query(`INSERT INTO post (content, title, userId, img, creationDate) VALUES ("${post.content}", "${post.title}", ${post.userId}, "${post.img}", now())`
+                SQLConnect.query(`INSERT INTO post (content, title, userId, img, creationDate) VALUES ( ? , ? , ? , ? , now())`, [post.content, post.title, post.userId, imgUrl]
                     , function (err, data, fields) {
                         if (err) {
                             reject(err)
@@ -51,7 +56,7 @@ class PostManager {
         let post = req.body
         return new Promise(
             (resolve, reject) => {
-                SQLConnect.query(`UPDATE post SET content = "${post.content}", title = "${post.title}", creationDate = now() WHERE id = ${post.id}`
+                SQLConnect.query(`UPDATE post SET content = ?, title = ?, creationDate = now() WHERE id = ?`, [post.content, post.title, post.id]
                     , function (err, data, fields) {
                         if (err) {
                             reject(err)
@@ -70,6 +75,7 @@ class PostManager {
                 SQLConnect.query(`DELETE FROM post WHERE ?`, { id },
                     function (err, data, fields) {
                         if (err) {
+                            console.log(err)
                             reject(err)
                         } else {
                             resolve(data)
@@ -78,6 +84,49 @@ class PostManager {
             }
         )
     }
+
+    async likePost(req) {
+        let userId = req.body.userId
+        let postId = req.body.postId
+        return new Promise(
+            (resolve, reject) => {
+                SQLConnect.query(`SELECT * FROM likepost WHERE userId=? AND postId=?`, [userId, postId],
+                    function (err, data, fields) {
+                        if (data.length != 0) {
+                            SQLConnect.query(`DELETE FROM likepost WHERE userId=? AND postId=?`, [userId, postId],
+                                function (err, data, fields) {
+                                    if (err) {
+                                        reject(err)
+                                    }
+                                })
+                        } else {
+                            SQLConnect.query(`INSERT INTO likepost (userId, postId) VALUES (?, ?)`, [userId, postId],
+                                function (err, data, fields) {
+                                    if (err) {
+                                        reject(err)
+                                    }
+                                })
+                        }
+                    });
+            }
+        )
+    }
+
+    async getUserLikes(req) {
+        let userId = req.params.id
+        return new Promise(
+            (resolve, reject) => {
+                SQLConnect.query(`SELECT * FROM likepost WHERE userId = ?`, userId, function (err, data, fields) {
+                    if (err) {
+                        reject(err)
+                    } else {
+                        resolve(data)
+                    }
+                });
+            }
+        )
+    }
 }
+
 
 module.exports = PostManager

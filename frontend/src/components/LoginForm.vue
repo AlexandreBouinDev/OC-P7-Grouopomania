@@ -22,7 +22,7 @@ export default {
             };
             controller.login(registerReq).then((data) => {
                 if (data.token) {
-                    router.push("/");
+                    router.push("/home");
                 } else {
                     this.error = "getError";
                 }

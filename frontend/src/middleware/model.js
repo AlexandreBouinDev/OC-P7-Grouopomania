@@ -1,9 +1,10 @@
-export default class Model {
+const path = process.env.VUE_APP_BACKPATH
 
+export default class Model {
 
     // USERS
     getUsers() {
-        return fetch("http://localhost:3000/api/users")
+        return fetch(`${path}/api/users`)
             .then((response) => response.json())
             .then((users) => {
                 return users;
@@ -12,7 +13,7 @@ export default class Model {
     }
 
     getUserData(userId) {
-        return fetch("http://localhost:3000/api/users/" + userId)
+        return fetch(`${path}/api/users/` + userId)
             .then((response) => response.json())
             .then((user) => {
                 return user;
@@ -22,7 +23,7 @@ export default class Model {
 
     addUser(newUser) {
         let data = JSON.stringify(newUser);
-        return fetch("http://localhost:3000/api/users/signup", {
+        return fetch(`${path}/api/users/signup`, {
             method: "POST",
             headers: {
                 "Accept": "application/json",
@@ -39,7 +40,7 @@ export default class Model {
 
     login(user) {
         let data = JSON.stringify(user);
-        return fetch("http://localhost:3000/api/users/login", {
+        return fetch(`${path}/api/users/login`, {
             method: "POST",
             headers: {
                 "Accept": "application/json",
@@ -60,7 +61,7 @@ export default class Model {
     editProfile(userReq) {
         let token = localStorage.getItem("token")
         let data = JSON.stringify(userReq);
-        return fetch("http://localhost:3000/api/users/edit", {
+        return fetch(`${path}/api/users/edit`, {
             method: "PUT",
             headers: {
                 "Accept": "application/json",
@@ -77,17 +78,12 @@ export default class Model {
     }
 
     updateProfilePicture(image, userId) {
-        console.log(image)
         let token = localStorage.getItem("token")
         let formData = new FormData()
-        formData.append("file", "file",)
-        console.log(formData)
-        return fetch("http://localhost:3000/api/users/updateProfilePicture/" + userId, {
+        formData.append("image", image)
+        return fetch(`${path}/api/users/updateProfilePicture/` + userId, {
             method: "POST",
             headers: {
-                "Accept": "application/json",
-                "Content-Type": "multipart/form-data",
-                "Content-Length": "14580053",
                 "Authorization": `Bearer ${token}`
             },
             body: formData,
@@ -102,7 +98,7 @@ export default class Model {
     deleteProfile(user) {
         let token = localStorage.getItem("token")
         let data = JSON.stringify(user);
-        return fetch("http://localhost:3000/api/users/delete", {
+        return fetch(`${path}/api/users/delete`, {
             method: "DELETE",
             headers: {
                 "Accept": "application/json",
@@ -116,7 +112,7 @@ export default class Model {
 
     // POSTS
     getPosts() {
-        return fetch("http://localhost:3000/api/posts")
+        return fetch(`${path}/api/posts`)
             .then((response) => response.json())
             .then((posts) => {
                 return posts;
@@ -125,7 +121,7 @@ export default class Model {
     }
 
     getUserPosts(userId) {
-        return fetch("http://localhost:3000/api/posts/" + userId)
+        return fetch(`${path}/api/posts/` + userId)
             .then((response) => response.json())
             .then((posts) => {
                 return posts;
@@ -133,17 +129,14 @@ export default class Model {
             .catch(console.error);
     }
 
-    addPost(postReq) {
+    addPost(formData) {
         let token = localStorage.getItem("token")
-        let data = JSON.stringify(postReq);
-        return fetch("http://localhost:3000/api/posts", {
+        return fetch(`${path}/api/posts`, {
             method: "POST",
             headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`
             },
-            body: data,
+            body: formData,
         })
             .then((response) => response.json())
             .then((data) => {
@@ -155,7 +148,7 @@ export default class Model {
     editPost(postReq) {
         let token = localStorage.getItem("token")
         let data = JSON.stringify(postReq);
-        return fetch("http://localhost:3000/api/posts/", {
+        return fetch(`${path}/api/posts`, {
             method: "PUT",
             headers: {
                 "Accept": "application/json",
@@ -175,7 +168,7 @@ export default class Model {
         let token = localStorage.getItem("token")
         let req = { id: postId }
         let data = JSON.stringify(req);
-        return fetch("http://localhost:3000/api/posts", {
+        return fetch(`${path}/api/posts`, {
             method: "DELETE",
             headers: {
                 "Accept": "application/json",
@@ -188,9 +181,33 @@ export default class Model {
             .catch(console.error);
     }
 
+    likePost(data) {
+        let token = localStorage.getItem("token")
+        let req = JSON.stringify(data);
+        return fetch(`${path}/api/posts/like`, {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: req,
+        })
+            .catch(console.error);
+    }
+
+    getUserLikes(userId) {
+        return fetch(`${path}/api/posts/like/` + userId)
+            .then((response) => response.json())
+            .then((likes) => {
+                return likes;
+            })
+            .catch(console.error);
+    }
+
     // COMMENTS
     getComments(postId) {
-        return fetch("http://localhost:3000/api/comments/" + postId)
+        return fetch(`${path}/api/comments/` + postId)
             .then((response) => response.json())
             .then((users) => {
                 return users;
@@ -201,7 +218,7 @@ export default class Model {
     addComment(commentReq) {
         let token = localStorage.getItem("token")
         let data = JSON.stringify(commentReq);
-        return fetch("http://localhost:3000/api/comments", {
+        return fetch(`${path}/api/comments`, {
             method: "POST",
             headers: {
                 "Accept": "application/json",
@@ -221,7 +238,7 @@ export default class Model {
         let token = localStorage.getItem("token")
         let id = commentReq.id
         let data = JSON.stringify(commentReq);
-        return fetch("http://localhost:3000/api/comments/" + id, {
+        return fetch(`${path}/api/comments/` + id, {
             method: "PUT",
             headers: {
                 "Accept": "application/json",
@@ -241,7 +258,7 @@ export default class Model {
         let token = localStorage.getItem("token")
         let req = { id: commentId }
         let data = JSON.stringify(req);
-        return fetch("http://localhost:3000/api/comments", {
+        return fetch(`${path}/api/comments`, {
             method: "DELETE",
             headers: {
                 "Accept": "application/json",

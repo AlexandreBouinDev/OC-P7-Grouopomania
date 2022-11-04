@@ -12,6 +12,9 @@ export default {
     data() {
         return { registerMode: "", email: "" };
     },
+    mounted() {
+        localStorage.clear();
+    },
     methods: {
         handleMode(mode, mail) {
             if (mode === true) {

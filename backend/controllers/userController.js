@@ -56,6 +56,7 @@ exports.login = (req, res, next) => {
     userManager.getUserByEmail(reqUser.email)
         .then(DBUser => {
             let userData = DBUser[0]
+            console.log(userData)
             if (!userData) {
                 return res.status(401).json({ error: 'Utilisateur introuvable !' });
             }
@@ -97,13 +98,9 @@ exports.editUser = (req, res, next) => {
 }
 
 exports.updateProfilePicture = (req, res, next) => {
-    console.log("TOTOTOTO", req.body)
-    let imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     if (res.locals.userId == req.params.id) {
         let userManager = new UserManager
-
-
-        userManager.updateProfilePicture(imageUrl)
+        userManager.updateProfilePicture(req.file.filename, req.params.id)
             .then(response => {
                 res.status(200).json(response)
             })
