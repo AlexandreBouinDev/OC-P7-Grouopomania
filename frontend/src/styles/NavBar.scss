@@ -1,33 +1,61 @@
 @use "./Global.scss" as g;
 
 #navbar {
-    background: g.$primary-dark;
+  background: g.$primary-dark;
+  display: flex;
+  color: white;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  .left {
     display: flex;
-    color: white;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 10;
+    align-items: center;
+  }
+
+  .right {
+    display: flex;
+
+    > a {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 10px;
+      text-decoration: none;
+      color: white;
+      border-bottom: 2px solid transparent;
+      &:hover {
+        border-bottom: 2px solid white;
+      }
+    }
+  }
+}
+
+@media screen and(max-width : 640px) {
+  #navbar {
+    p {
+      display: none;
+    }
+    .right a {
+      padding: 10px 30px;
+    }
+  }
+}
+
+@media screen and(max-width : 460px) {
+  #navbar {
+    .right {
+      width: 100vw;
+      justify-content: center;
+      > a {
+        flex: 1;
+        justify-content: center;
+      }
+    }
 
     .left {
-        display: flex;
-        align-items: center;
+      display: none;
     }
-
-    .right {
-        display: flex;
-
-        > a {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            padding: 10px;
-            text-decoration: none;
-            color: white;
-            border-bottom: 2px solid transparent;
-            &:hover {
-                border-bottom: 2px solid white;
-            }
-        }
-    }
+  }
 }

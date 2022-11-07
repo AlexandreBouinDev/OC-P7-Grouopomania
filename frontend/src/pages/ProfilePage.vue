@@ -53,12 +53,11 @@ export default {
     async loadUserPosts(userId) {
       this.xPosts = await controller.getUserPosts(userId);
     },
-    updateProfile(id) {
-      this.refreshUserData(id);
-    },
-    async refreshUserData(userId) {
-      let data = await controller.getUserData(userId);
-      this.user = data[0];
+    updateProfile(e) {
+      this.user.firstname = e.get("firstname");
+      this.user.lastname = e.get("lastname");
+      this.user.position = e.get("position");
+      this.user.email = e.get("email");
     }
   }
 };
@@ -71,7 +70,7 @@ export default {
       v-if="this.user.loaded"
       v-bind:userId="getUserId()"
       v-bind:user="this.user"
-      @profile-edited="updateProfile()"
+      @profile-edited="updateProfile"
     />
     <h2 class="history">Historique des posts</h2>
     <div v-for="post in xPosts" :key="post.id" class="post" id="PostsList">

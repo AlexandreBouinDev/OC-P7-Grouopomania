@@ -44,9 +44,9 @@ export default {
     setEmail(mail) {
       return `mailto:${mail}`;
     },
-    updateProfile() {
+    updateProfile(e) {
       this.editMode = "";
-      this.emit("profile-edited");
+      this.$emit("profile-edited", e);
     }
   }
 };

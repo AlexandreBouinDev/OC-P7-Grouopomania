@@ -19,7 +19,6 @@ export default {
     if (this.isLiked) {
       this.likedClass = "liked";
     }
-    console.log(this.isLiked);
   },
   methods: {
     handleLike() {

@@ -33,7 +33,6 @@ export default {
   },
   async mounted() {
     this.xUsers = await controller.getUsers();
-    console.log(this.post);
   },
   methods: {
     getUserData(idUser) {
