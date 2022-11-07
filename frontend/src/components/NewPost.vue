@@ -18,8 +18,7 @@ export default {
       const img = data.get("file-input");
       await controller.addPost(postReq, img);
       this.$emit("new-post");
-      // event.target.title.value = "";
-      // event.target.content.value = "";
+      event.target = null;
     }
   }
 };

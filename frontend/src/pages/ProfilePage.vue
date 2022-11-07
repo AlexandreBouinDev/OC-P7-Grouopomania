@@ -41,6 +41,9 @@ export default {
     }
   },
   methods: {
+    getLocalUserId() {
+      return localStorage.getItem("userId");
+    },
     getUserId() {
       let url = window.location.href.split("/");
       let userId = url.at(-1);
@@ -68,7 +71,7 @@ export default {
   <div class="page-body">
     <ProfileInfo
       v-if="this.user.loaded"
-      v-bind:userId="getUserId()"
+      v-bind:userId="getLocalUserId()"
       v-bind:user="this.user"
       @profile-edited="updateProfile"
     />
