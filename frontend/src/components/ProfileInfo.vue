@@ -84,7 +84,7 @@ export default {
       />
       <div
         :class="editMode"
-        v-if="this.userId == this.user.id"
+        v-if="localStorage.getItem('') == this.user.id"
         class="profile-button edit switch"
         v-on:click="editProfile()"
       >
