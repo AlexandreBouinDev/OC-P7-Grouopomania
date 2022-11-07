@@ -382,7 +382,7 @@
         transition: 0.5s all;
     }
 
-    &.isLiked {
+    &.liked {
         color: white;
         font-weight: bold;
         background: g.$success-light;
