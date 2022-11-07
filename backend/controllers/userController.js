@@ -1,7 +1,6 @@
 const UserManager = require("../managers/UserManager");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
 const randomTokenSecret = process.env.TOKEN;
 
 exports.getUsers = (req, res, next) => {
@@ -64,7 +63,6 @@ exports.login = (req, res, next) => {
     .getUserByEmail(reqUser.email)
     .then((DBUser) => {
       let userData = DBUser[0];
-      console.log(userData);
       if (!userData) {
         return res.status(401).json({ error: "Utilisateur introuvable !" });
       }

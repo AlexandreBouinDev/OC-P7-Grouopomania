@@ -75,7 +75,6 @@ class PostManager {
                 SQLConnect.query(`DELETE FROM post WHERE ?`, { id },
                     function (err, data, fields) {
                         if (err) {
-                            console.log(err)
                             reject(err)
                         } else {
                             resolve(data)

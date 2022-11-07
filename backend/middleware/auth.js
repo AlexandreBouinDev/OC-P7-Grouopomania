@@ -1,21 +1,20 @@
-const jwt = require('jsonwebtoken');
-require("dotenv").config()
-const randomTokenSecret = process.env.TOKEN
+const jwt = require("jsonwebtoken");
+const randomTokenSecret = process.env.TOKEN;
 
 module.exports = (req, res, next) => {
-    try {
-        const token = req.headers.authorization.split(' ')[1];
-        const decodedToken = jwt.verify(token, randomTokenSecret);
-        const userId = decodedToken.userId;
-        if (req.body.userId && req.body.userId != userId) {
-            throw 'Invalid user ID';
-        } else {
-            res.locals.userId = userId
-            next();
-        }
-    } catch {
-        res.status(401).json({
-            error: new Error('Invalid request!')
-        });
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwt.verify(token, randomTokenSecret);
+    const userId = decodedToken.userId;
+    if (req.body.userId && req.body.userId != userId) {
+      throw "Invalid user ID";
+    } else {
+      res.locals.userId = userId;
+      next();
     }
+  } catch {
+    res.status(401).json({
+      error: new Error("Invalid request!")
+    });
+  }
 };
