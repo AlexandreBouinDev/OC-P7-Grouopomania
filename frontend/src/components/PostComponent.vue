@@ -17,6 +17,7 @@ export default {
             xUsers: [],
             editMode: "",
             localUser: localStorage.getItem("userId"),
+            isAdmin : localStorage.getItem("isAdmin")
         };
     },
     props: {
@@ -92,7 +93,7 @@ export default {
                 <div
                     class="post-actions"
                     :class="editMode"
-                    v-if="this.localUser == this.post.userId"
+                    v-if="this.localUser == this.post.userId || this.isAdmin == 1"
                 >
                     <edit-icon v-on:click="editPost()" /><deleteIcon
                         v-on:click="deletePost(post.id)"
