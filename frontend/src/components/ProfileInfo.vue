@@ -57,7 +57,11 @@ export default {
 
 <template>
   <div class="profile-block">
-    <form class="profile-image" enctype="multipart/form-data">
+    <form
+      class="profile-image"
+      enctype="multipart/form-data"
+      v-if="!this.editMode"
+    >
       <div class="edit-layer"><upload-icon /></div>
       <label for="file-input" class="input-label">
         <img :src="setAvatarPath(this.user.avatar)" />
