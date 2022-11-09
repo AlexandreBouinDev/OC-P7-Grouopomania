@@ -47,6 +47,9 @@ export default {
     updateProfile(e) {
       this.editMode = "";
       this.$emit("profile-edited", e);
+    },
+    checkUser() {
+      return localStorage.getItem("") == this.user.id;
     }
   }
 };
@@ -84,7 +87,7 @@ export default {
       />
       <div
         :class="editMode"
-        v-if="localStorage.getItem('') == this.user.id"
+        v-if="checkUser"
         class="profile-button edit switch"
         v-on:click="editProfile()"
       >
